@@ -1,22 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Snake Game Mobile-Friendly</title>
+    <title>Snake Game – Nokia Edition</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Snake Game</h1>
+    <h1>🐍 Snake Game – Nokia Edition</h1>
     <canvas id="gameCanvas"></canvas>
 
-    <!-- دکمه‌های کنترل موبایل -->
-    <div id="controls">
-      <button id="up">↑</button>
-      <button id="left">←</button>
-      <button id="down">↓</button>
-      <button id="right">→</button>
+    <!-- کنترل نوکیا -->
+    <div id="nokia-controls">
+      <div class="control-row">
+        <button id="up">▲</button>
+      </div>
+      <div class="control-row">
+        <button id="left">◀</button>
+        <div class="center-circle"></div>
+        <button id="right">▶</button>
+      </div>
+      <div class="control-row">
+        <button id="down">▼</button>
+      </div>
     </div>
+
+    <!-- افکت‌های صوتی -->
+    <audio
+      id="eat-sound"
+      src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"
+    ></audio>
+    <audio
+      id="gameover-sound"
+      src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"
+    ></audio>
 
     <script src="script.js"></script>
   </body>

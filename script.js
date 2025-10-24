@@ -1,5 +1,7 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+const eatSound = document.getElementById("eat-sound");
+const gameOverSound = document.getElementById("gameover-sound");
 
 const scale = 25;
 const rows = 20;
@@ -7,15 +9,13 @@ const columns = 20;
 canvas.width = columns * scale;
 canvas.height = rows * scale;
 
-let snake = [];
-snake[0] = { x: 10, y: 10 };
+let snake = [{ x: 10, y: 10 }];
 let direction = "RIGHT";
 let nextDirection = "RIGHT";
 let food = spawnFood();
 let score = 0;
-
-let speed = 200;       // میلی‌ثانیه بین حرکت‌ها
-let speedLevel = 1;    // سرعت برای نمایش
+let speed = 200;
+let speedLevel = 1;
 
 // کنترل کیبورد
 window.addEventListener("keydown", e => {
@@ -48,28 +48,24 @@ function update(){
   if(direction === "LEFT") headX--;
   if(direction === "RIGHT") headX++;
 
-  // برخورد با دیوار یا خود مار
   if(headX<0 || headX>=columns || headY<0 || headY>=rows || collision(headX, headY)){
-    alert("Game Over! Score: "+score);
-    snake = [{x:10,y:10}];
-    direction = "RIGHT";
-    nextDirection = "RIGHT";
-    score = 0;
-    speed = 200;
-    speedLevel = 1;
-    food = spawnFood();
-    setTimeout(update, speed);
+    gameOverSound.play();
+    if (navigator.vibrate) navigator.vibrate([200,100,200]);
+    alert("💀 Game Over! Score: "+score);
+    resetGame();
     return;
   }
 
   snake.unshift({x:headX, y:headY});
 
-  // خوردن غذا
   if(headX === food.x && headY === food.y){
     score++;
+    eatSound.currentTime = 0;
+    eatSound.play();
+    if (navigator.vibrate) navigator.vibrate(100);
     food = spawnFood();
-    if(speed>50) speed -= 5; // افزایش سرعت واقعی
-    speedLevel++;             // افزایش سرعت برای نمایش
+    if(speed>50) speed -= 5;
+    speedLevel++;
   } else {
     snake.pop();
   }
@@ -78,32 +74,39 @@ function update(){
   setTimeout(update, speed);
 }
 
-function collision(x,y){
-  for(let i=0;i<snake.length;i++){
-    if(snake[i].x===x && snake[i].y===y) return true;
-  }
-  return false;
+function resetGame(){
+  snake = [{x:10,y:10}];
+  direction = "RIGHT";
+  nextDirection = "RIGHT";
+  score = 0;
+  speed = 200;
+  speedLevel = 1;
+  food = spawnFood();
+  setTimeout(update, speed);
 }
 
-// رسم بازی
+function collision(x,y){
+  return snake.some(part => part.x === x && part.y === y);
+}
+
 function draw(){
-  ctx.fillStyle="#111";
+  ctx.fillStyle="#001a00";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // رسم غذا
-  ctx.fillStyle="orange";
+  // غذا
+  ctx.fillStyle="lime";
   ctx.beginPath();
   ctx.arc(food.x*scale + scale/2, food.y*scale + scale/2, scale/2, 0, Math.PI*2);
   ctx.fill();
   ctx.closePath();
 
-  // رسم مار با سر روشن و بدن دایره‌ای
+  // مار
   for(let i=0;i<snake.length;i++){
     let gradient = ctx.createRadialGradient(
-      snake[i].x*scale + scale/2, snake[i].y*scale + scale/2, scale/4,
+      snake[i].x*scale + scale/2, snake[i].y*scale + scale/2, scale/6,
       snake[i].x*scale + scale/2, snake[i].y*scale + scale/2, scale/2
     );
-    gradient.addColorStop(0, i===0 ? "#00FF00":"#00AA00");
+    gradient.addColorStop(0, i===0 ? "#9efc9e":"#3aff3a");
     gradient.addColorStop(1, "#004400");
     ctx.fillStyle = gradient;
     ctx.beginPath();
@@ -112,12 +115,11 @@ function draw(){
     ctx.closePath();
   }
 
-  // نمایش امتیاز و سرعت
-  ctx.fillStyle="#fff";
-  ctx.font="20px Arial";
+  // امتیاز و سرعت
+  ctx.fillStyle="#9efc9e";
+  ctx.font="18px Courier New";
   ctx.fillText("Score: "+score, 10, 20);
-  ctx.fillText("Speed: "+speedLevel, 10, 45);
+  ctx.fillText("Speed: "+speedLevel, 10, 40);
 }
 
-// شروع بازی
 setTimeout(update, speed);
