@@ -1,7 +1,7 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-const scale = 25; // اندازه هر خانه
+const scale = 25;
 const rows = 20;
 const columns = 20;
 canvas.width = columns * scale;
@@ -15,7 +15,7 @@ let food = spawnFood();
 let score = 0;
 
 let speed = 200;       // میلی‌ثانیه بین حرکت‌ها
-let speedLevel = 1;    // عدد نمایش سرعت به کاربر
+let speedLevel = 1;    // سرعت برای نمایش
 
 // کنترل کیبورد
 window.addEventListener("keydown", e => {
@@ -25,7 +25,7 @@ window.addEventListener("keydown", e => {
   if(e.key === "ArrowRight" && direction !== "LEFT") nextDirection = "RIGHT";
 });
 
-// کنترل موبایل با دکمه‌ها
+// کنترل موبایل
 document.getElementById("up").addEventListener("click", () => { if(direction!=="DOWN") nextDirection="UP"; });
 document.getElementById("down").addEventListener("click", () => { if(direction!=="UP") nextDirection="DOWN"; });
 document.getElementById("left").addEventListener("click", () => { if(direction!=="RIGHT") nextDirection="LEFT"; });
@@ -69,7 +69,7 @@ function update(){
     score++;
     food = spawnFood();
     if(speed>50) speed -= 5; // افزایش سرعت واقعی
-    speedLevel++;             // افزایش سطح سرعت برای نمایش
+    speedLevel++;             // افزایش سرعت برای نمایش
   } else {
     snake.pop();
   }
@@ -90,7 +90,7 @@ function draw(){
   ctx.fillStyle="#111";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // غذا دایره‌ای و جذاب
+  // رسم غذا
   ctx.fillStyle="orange";
   ctx.beginPath();
   ctx.arc(food.x*scale + scale/2, food.y*scale + scale/2, scale/2, 0, Math.PI*2);

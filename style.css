@@ -12,20 +12,28 @@ h1 {
   margin-top: 10px;
 }
 
+/* canvas responsive */
 canvas {
   background-color: #111;
   margin-top: 10px;
   border: 2px solid #fff;
+  width: 95vw;   /* 95% عرض صفحه */
+  height: auto;  /* ارتفاع اتوماتیک نسبت به عرض */
+  max-width: 600px; /* محدودیت بیشینه برای دسکتاپ */
 }
 
+/* دکمه‌های کنترل کنار هم */
 #controls {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px; /* فاصله بین دکمه‌ها */
   margin-top: 10px;
 }
 
 #controls button {
   width: 60px;
   height: 60px;
-  margin: 5px;
   font-size: 24px;
   background-color: #444;
   color: #fff;
