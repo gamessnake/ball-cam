@@ -3,61 +3,63 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>بازی آنلاین سنگ-کاغذ-قیچی</title>
+    <title>رِمز — سنگ کاغذ قیچی P2P</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="card">
-      <h1>بازی آنلاین سنگ ✊ — کاغذ ✋ — قیچی ✌️ (P2P)</h1>
+    <main class="card">
+      <h1>بازی آنلاین — سنگ، کاغذ، قیچی (بدون سرور)</h1>
 
-      <div class="row" style="gap: 12px">
-        <div style="flex: 1; min-width: 300px">
-          <div class="small">مرحلهٔ ایجاد اتصال (طرف A)</div>
-          <div class="controls">
+      <section class="grid">
+        <div>
+          <div class="label">۱) ایجاد Offer (بازیکن A)</div>
+          <div class="btnrow">
             <button id="createOffer">ساختن Offer</button>
-            <button id="copyOffer" class="secondary">کپی Offer</button>
-            <button id="setRemoteAnswer" class="secondary">
-              قرار دادن Answer (Paste)
-            </button>
+            <button id="copyOffer">کپی</button>
           </div>
           <textarea
             id="offerArea"
-            placeholder="Offer / Answer اینجا نمایش داده میشه..."
+            placeholder="Offer (Base64 یا خام) اینجا ظاهر می‌شود"
           ></textarea>
         </div>
 
-        <div style="flex: 1; min-width: 300px">
-          <div class="small">اگر طرف دوم هستید (طرف B)</div>
-          <div class="controls">
-            <button id="pasteOffer" class="secondary">
-              چسباندن Offer دریافتی
-            </button>
+        <div>
+          <div class="label">۲) دریافت Offer و ساخت Answer (بازیکن B)</div>
+          <div class="btnrow">
+            <button id="pasteOffer">چسباندن از Clipboard</button>
             <button id="createAnswer">ساختن Answer</button>
-            <button id="copyAnswer" class="secondary">کپی Answer</button>
+            <button id="copyAnswer">کپی Answer</button>
           </div>
           <textarea
             id="answerArea"
-            placeholder="اینجا Offer یا Answer را بچسبانید یا پاسخ ساخته شود..."
+            placeholder="اینجا Offer را پیست کنید یا Answer اینجا نمایش داده می‌شود"
           ></textarea>
         </div>
-      </div>
+      </section>
 
-      <div class="status" id="connStatus">وضعیت: قطع (not connected)</div>
+      <div class="status" id="connStatus">وضعیت: قطع</div>
 
-      <div class="card" style="margin-top: 12px">
-        <div class="small">بخش بازی</div>
+      <section class="game card-lower">
+        <div class="label">بخش بازی</div>
         <div class="moves">
-          <button class="move-btn" data-move="rock">سنگ</button>
-          <button class="move-btn" data-move="paper">کاغذ</button>
-          <button class="move-btn" data-move="scissors">قیچی</button>
+          <button class="move" data-move="rock">سنگ</button>
+          <button class="move" data-move="paper">کاغذ</button>
+          <button class="move" data-move="scissors">قیچی</button>
         </div>
-        <div class="result" id="resultText">هنوز بازی نشده</div>
-        <div style="display: flex; justify-content: center; margin-top: 8px">
-          <button id="rematch" class="secondary">شروع دوباره</button>
+        <div id="countdown" class="countdown">---</div>
+        <div id="result" class="result">هنوز بازی نشده</div>
+        <div class="small">
+          نحوهٔ اتصال: بازیکن A Offer را می‌سازد → آن را کپی و برای بازیکن B
+          ارسال می‌کند → بازیکن B Offer را پیست و Answer می‌سازد و کپی می‌کند →
+          بازیکن A Answer را پیست می‌کند.
         </div>
-        <div class="log" id="logArea" style="margin-top: 10px"></div>
-      </div>
-    </div>
+        <div class="btnrow" style="justify-content: center; margin-top: 10px">
+          <button id="rematch">شروع دوباره</button>
+          <button id="help">راهنما</button>
+        </div>
+        <pre id="logArea" class="log"></pre>
+      </section>
+    </main>
 
     <script src="script.js"></script>
   </body>
