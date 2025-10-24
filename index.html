@@ -1,66 +1,20 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>رِمز — سنگ کاغذ قیچی P2P</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snake Game Mobile-Friendly</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <main class="card">
-      <h1>بازی آنلاین — سنگ، کاغذ، قیچی (بدون سرور)</h1>
-
-      <section class="grid">
-        <div>
-          <div class="label">۱) ایجاد Offer (بازیکن A)</div>
-          <div class="btnrow">
-            <button id="createOffer">ساختن Offer</button>
-            <button id="copyOffer">کپی</button>
-          </div>
-          <textarea
-            id="offerArea"
-            placeholder="Offer (Base64 یا خام) اینجا ظاهر می‌شود"
-          ></textarea>
-        </div>
-
-        <div>
-          <div class="label">۲) دریافت Offer و ساخت Answer (بازیکن B)</div>
-          <div class="btnrow">
-            <button id="pasteOffer">چسباندن از Clipboard</button>
-            <button id="createAnswer">ساختن Answer</button>
-            <button id="copyAnswer">کپی Answer</button>
-          </div>
-          <textarea
-            id="answerArea"
-            placeholder="اینجا Offer را پیست کنید یا Answer اینجا نمایش داده می‌شود"
-          ></textarea>
-        </div>
-      </section>
-
-      <div class="status" id="connStatus">وضعیت: قطع</div>
-
-      <section class="game card-lower">
-        <div class="label">بخش بازی</div>
-        <div class="moves">
-          <button class="move" data-move="rock">سنگ</button>
-          <button class="move" data-move="paper">کاغذ</button>
-          <button class="move" data-move="scissors">قیچی</button>
-        </div>
-        <div id="countdown" class="countdown">---</div>
-        <div id="result" class="result">هنوز بازی نشده</div>
-        <div class="small">
-          نحوهٔ اتصال: بازیکن A Offer را می‌سازد → آن را کپی و برای بازیکن B
-          ارسال می‌کند → بازیکن B Offer را پیست و Answer می‌سازد و کپی می‌کند →
-          بازیکن A Answer را پیست می‌کند.
-        </div>
-        <div class="btnrow" style="justify-content: center; margin-top: 10px">
-          <button id="rematch">شروع دوباره</button>
-          <button id="help">راهنما</button>
-        </div>
-        <pre id="logArea" class="log"></pre>
-      </section>
-    </main>
-
+    <h1>Snake Game</h1>
+    <canvas id="gameCanvas"></canvas>
+    <div id="controls">
+      <button id="up">↑</button><br />
+      <button id="left">←</button>
+      <button id="down">↓</button>
+      <button id="right">→</button>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
