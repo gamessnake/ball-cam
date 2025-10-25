@@ -1,154 +1,126 @@
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
-const eatSound = document.getElementById("eat-sound");
-const gameOverSound = document.getElementById("gameover-sound");
-const startBtn = document.getElementById("start-btn");
+document.addEventListener("DOMContentLoaded", () => {
+  const canvas = document.getElementById("gameCanvas");
+  const ctx = canvas.getContext("2d");
+  const startBtn = document.getElementById("startBtn");
+  const bgMusic = document.getElementById("bgMusic");
+  const eatSound = document.getElementById("eatSound");
+  const deadSound = document.getElementById("deadSound");
 
-const scale = 20; // 🟢 کوچکتر از قبل
-const rows = 20;
-const columns = 20;
-canvas.width = columns * scale;
-canvas.height = rows * scale;
+  const grid = 20;
+  let snake, direction, nextDirection, food, speed, running, gameLoop;
 
-let snake = [{ x: 10, y: 10 }];
-let direction = "RIGHT";
-let nextDirection = "RIGHT";
-let food = spawnFood();
-let score = 0;
-let speed = 200;
-let speedLevel = 1;
-let gameRunning = false;
-let gameTimer = null;
-
-// کنترل کیبورد
-window.addEventListener("keydown", e => {
-  if(!gameRunning) return; // قبل از شروع بازی بی‌اثر
-  if(e.key === "ArrowUp" && direction !== "DOWN") nextDirection = "UP";
-  if(e.key === "ArrowDown" && direction !== "UP") nextDirection = "DOWN";
-  if(e.key === "ArrowLeft" && direction !== "RIGHT") nextDirection = "LEFT";
-  if(e.key === "ArrowRight" && direction !== "LEFT") nextDirection = "RIGHT";
-});
-
-// کنترل موبایل
-["up","down","left","right"].forEach(id => {
-  document.getElementById(id).addEventListener("click", () => {
-    if(!gameRunning) return;
-    if(id==="up" && direction!=="DOWN") nextDirection="UP";
-    if(id==="down" && direction!=="UP") nextDirection="DOWN";
-    if(id==="left" && direction!=="RIGHT") nextDirection="LEFT";
-    if(id==="right" && direction!=="LEFT") nextDirection="RIGHT";
-  });
-});
-
-// دکمه شروع بازی
-startBtn.addEventListener("click", () => {
-  if(!gameRunning){
-    startGame();
-    startBtn.textContent = "در حال بازی...";
-    startBtn.disabled = true;
-    startBtn.style.opacity = 0.6;
-  }
-});
-
-function startGame(){
-  gameRunning = true;
-  update();
-}
-
-function spawnFood(){
-  return {
-    x: Math.floor(Math.random()*columns),
-    y: Math.floor(Math.random()*rows)
-  };
-}
-
-function update(){
-  if(!gameRunning) return;
-
-  direction = nextDirection;
-  let headX = snake[0].x;
-  let headY = snake[0].y;
-
-  if(direction === "UP") headY--;
-  if(direction === "DOWN") headY++;
-  if(direction === "LEFT") headX--;
-  if(direction === "RIGHT") headX++;
-
-  if(headX<0 || headX>=columns || headY<0 || headY>=rows || collision(headX, headY)){
-    gameOverSound.play();
-    if (navigator.vibrate) navigator.vibrate([200,100,200]);
-    alert("💀 Game Over! Score: "+score);
-    resetGame();
-    return;
+  function resizeCanvas() {
+    const size = Math.min(window.innerWidth * 0.9, 400);
+    canvas.width = size;
+    canvas.height = size;
   }
 
-  snake.unshift({x:headX, y:headY});
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
 
-  if(headX === food.x && headY === food.y){
-    score++;
-    eatSound.currentTime = 0;
-    eatSound.play();
-    if (navigator.vibrate) navigator.vibrate(100);
-    food = spawnFood();
-    if(speed>50) speed -= 5;
-    speedLevel++;
-  } else {
-    snake.pop();
+  function initGame() {
+    snake = [{ x: 10, y: 10 }];
+    direction = "RIGHT";
+    nextDirection = "RIGHT";
+    food = randomFood();
+    speed = 200;
+    running = false;
+    clearInterval(gameLoop);
+    draw();
   }
 
-  draw();
-  gameTimer = setTimeout(update, speed);
-}
+  function randomFood() {
+    return {
+      x: Math.floor(Math.random() * grid),
+      y: Math.floor(Math.random() * grid),
+    };
+  }
 
-function resetGame(){
-  clearTimeout(gameTimer);
-  snake = [{x:10,y:10}];
-  direction = "RIGHT";
-  nextDirection = "RIGHT";
-  score = 0;
-  speed = 200;
-  speedLevel = 1;
-  food = spawnFood();
-  gameRunning = false;
-  startBtn.textContent = "شروع دوباره ▶️";
-  startBtn.disabled = false;
-  startBtn.style.opacity = 1;
-  draw();
-}
+  function vibrate(duration = 100) {
+    if (navigator.vibrate) navigator.vibrate(duration);
+  }
 
-function collision(x,y){
-  return snake.some(part => part.x === x && part.y === y);
-}
+  function draw() {
+    const cell = canvas.width / grid;
+    ctx.fillStyle = "#001a00";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-function draw(){
-  ctx.fillStyle="#001a00";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  // غذا
-  ctx.fillStyle="lime";
-  ctx.beginPath();
-  ctx.arc(food.x*scale + scale/2, food.y*scale + scale/2, scale/2, 0, Math.PI*2);
-  ctx.fill();
-  ctx.closePath();
-
-  // مار
-  for(let i=0;i<snake.length;i++){
-    let gradient = ctx.createRadialGradient(
-      snake[i].x*scale + scale/2, snake[i].y*scale + scale/2, scale/6,
-      snake[i].x*scale + scale/2, snake[i].y*scale + scale/2, scale/2
-    );
-    gradient.addColorStop(0, i===0 ? "#9efc9e":"#3aff3a");
-    gradient.addColorStop(1, "#004400");
-    ctx.fillStyle = gradient;
+    // غذا
+    ctx.fillStyle = "#ff3333";
     ctx.beginPath();
-    ctx.arc(snake[i].x*scale + scale/2, snake[i].y*scale + scale/2, scale/2, 0, Math.PI*2);
+    ctx.arc(food.x * cell + cell / 2, food.y * cell + cell / 2, cell / 3, 0, Math.PI * 2);
     ctx.fill();
-    ctx.closePath();
+
+    // مار
+    for (let i = 0; i < snake.length; i++) {
+      const part = snake[i];
+      ctx.fillStyle = i === 0 ? "#00ff00" : "#00cc66";
+      ctx.beginPath();
+      ctx.roundRect(part.x * cell, part.y * cell, cell - 2, cell - 2, 6);
+      ctx.fill();
+    }
   }
 
-  // امتیاز و سرعت
-  ctx.fillStyle="#9efc9e";
-  ctx.font="16px Courier New";
-  ctx.fillText("Score: "+score, 10, 20);
-  ctx.fillText("Speed: "+speedLevel, 10, 40);
-}
+  function move() {
+    if (!running) return;
+    const head = { ...snake[0] };
+    direction = nextDirection;
+
+    if (direction === "UP") head.y--;
+    else if (direction === "DOWN") head.y++;
+    else if (direction === "LEFT") head.x--;
+    else if (direction === "RIGHT") head.x++;
+
+    if (head.x < 0 || head.y < 0 || head.x >= grid || head.y >= grid ||
+        snake.some((s) => s.x === head.x && s.y === head.y)) {
+      bgMusic.pause();
+      deadSound.currentTime = 0;
+      deadSound.play();
+      vibrate(200); // لرزش مردن
+      alert("💀 باختی!");
+      initGame();
+      return;
+    }
+
+    snake.unshift(head);
+
+    if (head.x === food.x && head.y === food.y) {
+      food = randomFood();
+      speed = Math.max(60, speed - 10);
+      clearInterval(gameLoop);
+      gameLoop = setInterval(move, speed);
+      eatSound.currentTime = 0;
+      eatSound.play();
+      vibrate(100); // لرزش غذا خوردن
+    } else {
+      snake.pop();
+    }
+
+    draw();
+  }
+
+  // کنترل جهت‌ها
+  document.getElementById("up").onclick = () => { if (direction !== "DOWN") nextDirection = "UP"; };
+  document.getElementById("down").onclick = () => { if (direction !== "UP") nextDirection = "DOWN"; };
+  document.getElementById("left").onclick = () => { if (direction !== "RIGHT") nextDirection = "LEFT"; };
+  document.getElementById("right").onclick = () => { if (direction !== "LEFT") nextDirection = "RIGHT"; };
+  document.getElementById("ok").onclick = () => { /* میتونی مثلا Pause یا هیچ کاری */ };
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowUp" && direction !== "DOWN") nextDirection = "UP";
+    if (e.key === "ArrowDown" && direction !== "UP") nextDirection = "DOWN";
+    if (e.key === "ArrowLeft" && direction !== "RIGHT") nextDirection = "LEFT";
+    if (e.key === "ArrowRight" && direction !== "LEFT") nextDirection = "RIGHT";
+  });
+
+  startBtn.onclick = () => {
+    if (running) return;
+    running = true;
+    bgMusic.currentTime = 0;
+    bgMusic.play();
+    clearInterval(gameLoop);
+    gameLoop = setInterval(move, speed);
+  };
+
+  initGame();
+});

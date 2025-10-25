@@ -1,104 +1,105 @@
-html, body {
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow: hidden; /* 🚫 بدون اسکرول */
+  font-family: Arial, sans-serif;
+  background-color: #111;
+  color: white;
+}
+
+.game-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  background-color: #0b1d0a;
-  color: #9efc9e;
-  font-family: 'Courier New', monospace;
+  gap: 15px;
 }
 
-h1 {
-  margin: 5px 0;
-  font-size: clamp(18px, 4vw, 24px);
-  text-shadow: 0 0 8px #3aff3a;
-  text-align: center;
-}
-
-/* صفحه بازی */
-canvas {
-  background-color: #001a00;
-  border: 2px solid #3aff3a;
-  width: 85vw;
-  height: 85vw;
-  max-width: 380px;
-  max-height: 380px;
-  box-shadow: 0 0 15px #3aff3a80;
-  margin-top: 5px;
-}
-
-/* بخش پایین */
-#bottom-panel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 5px;
-}
-
-/* دکمه شروع */
-#start-btn {
-  font-size: clamp(20px, 6vw, 26px);
+#startBtn {
+  font-size: 24px;
   padding: 10px 15px;
-  background-color: #3aff3a20;
-  color: #9efc9e;
-  border: 2px solid #3aff3a;
-  border-radius: 50%;
-  width: clamp(60px, 15vw, 70px);
-  height: clamp(60px, 15vw, 70px);
-  box-shadow: 0 0 10px #3aff3a80;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-#start-btn:active {
-  background-color: #3aff3a40;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  background-color: #00cc66;
+  color: white;
 }
 
-/* کنترل نوکیا */
-#nokia-controls {
+#startBtn:active {
+  background-color: #00ff00;
+}
+
+#gameCanvas {
+  border: 2px solid #333;
+  border-radius: 10px;
+  max-width: 90vw;
+  max-height: 90vw;
+}
+
+/* دکمه‌های حرکت نوکیا (D-pad) */
+#controls {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: scale(0.9);
+  gap: 5px;
 }
 
-.control-row {
+/* بالا و پایین */
+#controls #up, #controls #down {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background-color: #d3d3d3;
+  border: 2px solid #777;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-#nokia-controls button {
-  width: clamp(45px, 13vw, 60px);
-  height: clamp(45px, 13vw, 60px);
-  margin: 3px;
-  font-size: clamp(18px, 5vw, 26px);
   font-weight: bold;
-  color: #9efc9e;
-  background: radial-gradient(circle at 30% 30%, #0f3, #040);
-  border: 2px solid #3aff3a;
-  border-radius: 50%;
-  box-shadow: inset 0 0 8px #3aff3a, 0 2px 5px #000;
-  transition: all 0.1s;
+  box-shadow: 2px 2px 5px #000;
+  cursor: pointer;
 }
 
-#nokia-controls button:active {
-  transform: scale(0.9);
-  background: radial-gradient(circle at 70% 70%, #060, #0f3);
+/* ردیف وسط: چپ، OK، راست */
+.middle-row {
+  display: flex;
+  gap: 5px;
 }
 
-.center-circle {
-  width: clamp(35px, 10vw, 50px);
-  height: clamp(35px, 10vw, 50px);
-  border: 2px solid #3aff3a;
-  border-radius: 50%;
-  margin: 3px;
-  background: radial-gradient(circle, #002200, #000);
-  box-shadow: inset 0 0 8px #3aff3a;
+.middle-row button {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background-color: #d3d3d3;
+  border: 2px solid #777;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  box-shadow: 2px 2px 5px #000;
+  cursor: pointer;
+}
+
+#controls button:active, .middle-row button:active {
+  background-color: #aaa;
+  box-shadow: inset 2px 2px 5px #000;
+}
+
+/* دکمه OK وسطی */
+#ok {
+  background-color: #ffcc00;
+  font-weight: bold;
+}
+
+@media (max-width: 400px) {
+  #controls #up, #controls #down, .middle-row button {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+  }
+
+  #startBtn {
+    font-size: 20px;
+    padding: 8px 12px;
+  }
 }
