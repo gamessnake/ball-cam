@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const deadSound = document.getElementById("deadSound");
 
   const grid = 20;
-  let snake, direction, nextDirection, food, speed, running, gameLoop;
+  let snake, direction, nextDirection, food, speed, running, paused, gameLoop;
   let score = 0;
 
   function resizeCanvas() {
@@ -25,8 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
     direction = "RIGHT";
     nextDirection = "RIGHT";
     food = randomFood();
-    speed = 400; // شروع خیلی آهسته
+    speed = 400; // شروع آهسته
     running = false;
+    paused = false;
     score = 0;
     clearInterval(gameLoop);
     draw();
@@ -45,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function draw() {
     const cell = canvas.width / grid;
-    // پس‌زمینه سبز داخل قاب
+    // پس‌زمینه سبز
     ctx.fillStyle = "#0a3d0a";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -73,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function move() {
-    if (!running) return;
+    if (!running || paused) return; // اگر بازی متوقف شده باشه، حرکت نکنه
     const head = { ...snake[0] };
     direction = nextDirection;
 
@@ -116,18 +117,43 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("down").onclick = () => { if (direction !== "UP") nextDirection = "DOWN"; };
   document.getElementById("left").onclick = () => { if (direction !== "RIGHT") nextDirection = "LEFT"; };
   document.getElementById("right").onclick = () => { if (direction !== "LEFT") nextDirection = "RIGHT"; };
-  document.getElementById("ok").onclick = () => { /* Pause یا کار دیگر */ };
 
-  window.addEventListener("keydown", (e) => {
+  // کلید OK برای Pause/Resume
+  document.getElementById("ok").onclick = () => {
+    if (!running) return;
+    paused = !paused;
+    if (!paused) {
+      // ادامه بازی
+      clearInterval(gameLoop);
+      gameLoop = setInterval(move, speed);
+    } else {
+      clearInterval(gameLoop);
+    }
+  };
+
+window.addEventListener("keydown", (e) => {
     if (e.key === "ArrowUp" && direction !== "DOWN") nextDirection = "UP";
     if (e.key === "ArrowDown" && direction !== "UP") nextDirection = "DOWN";
     if (e.key === "ArrowLeft" && direction !== "RIGHT") nextDirection = "LEFT";
     if (e.key === "ArrowRight" && direction !== "LEFT") nextDirection = "RIGHT";
+    if (e.key === " ") { // فاصله هم Pause/Resume کنه
+      if (running) {
+        paused = !paused;
+        if (!paused) {
+          clearInterval(gameLoop);
+          gameLoop = setInterval(move, speed);
+        } else {
+          clearInterval(gameLoop);
+        }
+      }
+    }
   });
 
-startBtn.onclick = () => {
+  // دکمه شروع
+  startBtn.onclick = () => {
     if (running) return;
     running = true;
+    paused = false;
     bgMusic.currentTime = 0;
     bgMusic.play();
     clearInterval(gameLoop);
