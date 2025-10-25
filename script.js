@@ -2,8 +2,9 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const eatSound = document.getElementById("eat-sound");
 const gameOverSound = document.getElementById("gameover-sound");
+const startBtn = document.getElementById("start-btn");
 
-const scale = 25;
+const scale = 20; // 🟢 کوچکتر از قبل
 const rows = 20;
 const columns = 20;
 canvas.width = columns * scale;
@@ -16,9 +17,12 @@ let food = spawnFood();
 let score = 0;
 let speed = 200;
 let speedLevel = 1;
+let gameRunning = false;
+let gameTimer = null;
 
 // کنترل کیبورد
 window.addEventListener("keydown", e => {
+  if(!gameRunning) return; // قبل از شروع بازی بی‌اثر
   if(e.key === "ArrowUp" && direction !== "DOWN") nextDirection = "UP";
   if(e.key === "ArrowDown" && direction !== "UP") nextDirection = "DOWN";
   if(e.key === "ArrowLeft" && direction !== "RIGHT") nextDirection = "LEFT";
@@ -26,10 +30,30 @@ window.addEventListener("keydown", e => {
 });
 
 // کنترل موبایل
-document.getElementById("up").addEventListener("click", () => { if(direction!=="DOWN") nextDirection="UP"; });
-document.getElementById("down").addEventListener("click", () => { if(direction!=="UP") nextDirection="DOWN"; });
-document.getElementById("left").addEventListener("click", () => { if(direction!=="RIGHT") nextDirection="LEFT"; });
-document.getElementById("right").addEventListener("click", () => { if(direction!=="LEFT") nextDirection="RIGHT"; });
+["up","down","left","right"].forEach(id => {
+  document.getElementById(id).addEventListener("click", () => {
+    if(!gameRunning) return;
+    if(id==="up" && direction!=="DOWN") nextDirection="UP";
+    if(id==="down" && direction!=="UP") nextDirection="DOWN";
+    if(id==="left" && direction!=="RIGHT") nextDirection="LEFT";
+    if(id==="right" && direction!=="LEFT") nextDirection="RIGHT";
+  });
+});
+
+// دکمه شروع بازی
+startBtn.addEventListener("click", () => {
+  if(!gameRunning){
+    startGame();
+    startBtn.textContent = "در حال بازی...";
+    startBtn.disabled = true;
+    startBtn.style.opacity = 0.6;
+  }
+});
+
+function startGame(){
+  gameRunning = true;
+  update();
+}
 
 function spawnFood(){
   return {
@@ -39,6 +63,8 @@ function spawnFood(){
 }
 
 function update(){
+  if(!gameRunning) return;
+
   direction = nextDirection;
   let headX = snake[0].x;
   let headY = snake[0].y;
@@ -71,10 +97,11 @@ function update(){
   }
 
   draw();
-  setTimeout(update, speed);
+  gameTimer = setTimeout(update, speed);
 }
 
 function resetGame(){
+  clearTimeout(gameTimer);
   snake = [{x:10,y:10}];
   direction = "RIGHT";
   nextDirection = "RIGHT";
@@ -82,7 +109,11 @@ function resetGame(){
   speed = 200;
   speedLevel = 1;
   food = spawnFood();
-  setTimeout(update, speed);
+  gameRunning = false;
+  startBtn.textContent = "شروع دوباره ▶️";
+  startBtn.disabled = false;
+  startBtn.style.opacity = 1;
+  draw();
 }
 
 function collision(x,y){
@@ -117,9 +148,7 @@ function draw(){
 
   // امتیاز و سرعت
   ctx.fillStyle="#9efc9e";
-  ctx.font="18px Courier New";
+  ctx.font="16px Courier New";
   ctx.fillText("Score: "+score, 10, 20);
   ctx.fillText("Speed: "+speedLevel, 10, 40);
 }
-
-setTimeout(update, speed);

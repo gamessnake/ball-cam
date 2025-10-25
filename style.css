@@ -3,7 +3,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #0b1d0a; /* سبز تیره نوکیا */
+  background-color: #0b1d0a;
   color: #9efc9e;
   font-family: 'Courier New', monospace;
 }
@@ -17,11 +17,27 @@ h1 {
 canvas {
   background-color: #001a00;
   border: 2px solid #3aff3a;
-  width: 95vw;
+  width: 90vw; /* کمی کوچکتر از قبل برای دیدن کامل */
   height: auto;
-  max-width: 500px;
+  max-width: 400px;
   margin-top: 10px;
   box-shadow: 0 0 20px #3aff3a80;
+}
+
+/* دکمه شروع بازی */
+#start-btn {
+  margin-top: 15px;
+  font-size: 20px;
+  padding: 10px 25px;
+  background-color: #3aff3a20;
+  color: #9efc9e;
+  border: 2px solid #3aff3a;
+  border-radius: 10px;
+  font-family: 'Courier New', monospace;
+  box-shadow: 0 0 10px #3aff3a80;
+}
+#start-btn:active {
+  background-color: #3aff3a40;
 }
 
 /* کنترل نوکیا */
@@ -29,7 +45,7 @@ canvas {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 25px;
+  margin-top: 20px;
 }
 
 .control-row {
@@ -39,10 +55,10 @@ canvas {
 }
 
 #nokia-controls button {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   margin: 5px;
-  font-size: 30px;
+  font-size: 26px;
   font-weight: bold;
   color: #9efc9e;
   background: radial-gradient(circle at 30% 30%, #0f3, #040);
@@ -59,8 +75,8 @@ canvas {
 
 /* دایره وسطی */
 .center-circle {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border: 2px solid #3aff3a;
   border-radius: 50%;
   margin: 5px;
