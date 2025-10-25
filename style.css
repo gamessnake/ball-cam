@@ -1,33 +1,39 @@
-body {
+html, body {
   margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* 🚫 حذف اسکرول */
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   background-color: #0b1d0a;
   color: #9efc9e;
   font-family: 'Courier New', monospace;
 }
 
 h1 {
-  margin: 15px 0 5px;
+  margin: 10px 0 5px;
+  font-size: clamp(18px, 4vw, 26px);
   text-shadow: 0 0 8px #3aff3a;
+  text-align: center;
 }
 
 /* canvas */
 canvas {
   background-color: #001a00;
   border: 2px solid #3aff3a;
-  width: 90vw; /* کمی کوچکتر از قبل برای دیدن کامل */
-  height: auto;
+  width: 90vw;  /* تطبیق با عرض گوشی */
+  height: 90vw; /* مربع کامل متناسب با عرض */
   max-width: 400px;
-  margin-top: 10px;
+  max-height: 400px;
+  margin: 5px 0;
   box-shadow: 0 0 20px #3aff3a80;
 }
 
-/* دکمه شروع بازی */
+/* دکمه شروع */
 #start-btn {
-  margin-top: 15px;
-  font-size: 20px;
+  font-size: clamp(16px, 4vw, 20px);
   padding: 10px 25px;
   background-color: #3aff3a20;
   color: #9efc9e;
@@ -35,6 +41,7 @@ canvas {
   border-radius: 10px;
   font-family: 'Courier New', monospace;
   box-shadow: 0 0 10px #3aff3a80;
+  margin: 8px 0;
 }
 #start-btn:active {
   background-color: #3aff3a40;
@@ -45,7 +52,8 @@ canvas {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+  margin-bottom: 10px;
+  user-select: none;
 }
 
 .control-row {
@@ -55,10 +63,10 @@ canvas {
 }
 
 #nokia-controls button {
-  width: 60px;
-  height: 60px;
-  margin: 5px;
-  font-size: 26px;
+  width: clamp(50px, 14vw, 65px);
+  height: clamp(50px, 14vw, 65px);
+  margin: 4px;
+  font-size: clamp(20px, 5vw, 28px);
   font-weight: bold;
   color: #9efc9e;
   background: radial-gradient(circle at 30% 30%, #0f3, #040);
@@ -73,13 +81,12 @@ canvas {
   background: radial-gradient(circle at 70% 70%, #060, #0f3);
 }
 
-/* دایره وسطی */
 .center-circle {
-  width: 50px;
-  height: 50px;
+  width: clamp(40px, 12vw, 55px);
+  height: clamp(40px, 12vw, 55px);
   border: 2px solid #3aff3a;
   border-radius: 50%;
-  margin: 5px;
+  margin: 4px;
   background: radial-gradient(circle, #002200, #000);
   box-shadow: inset 0 0 8px #3aff3a;
 }
