@@ -1,3 +1,4 @@
+/* کل صفحه مشکی */
 body {
   display: flex;
   justify-content: center;
@@ -5,7 +6,7 @@ body {
   min-height: 100vh;
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #111;
+  background-color: #000000; /* مشکی برای چشم */
   color: white;
 }
 
@@ -13,9 +14,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
 }
 
+/* دکمه شروع */
 #startBtn {
   font-size: 24px;
   padding: 10px 15px;
@@ -30,26 +32,27 @@ body {
   background-color: #00ff00;
 }
 
+/* کانواس بازی (قاب سبز تیره) */
 #gameCanvas {
   border: 2px solid #333;
   border-radius: 10px;
   max-width: 90vw;
   max-height: 90vw;
+  background-color: #0a3d0a; /* سبز تیره */
 }
 
-/* دکمه‌های حرکت نوکیا (D-pad) */
+/* دکمه‌های حرکت نوکیا (D-pad) بزرگ‌تر و دایره‌ای */
 #controls {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
 }
 
-/* بالا و پایین */
 #controls #up, #controls #down {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
   background-color: #d3d3d3;
   border: 2px solid #777;
   display: flex;
@@ -60,16 +63,15 @@ body {
   cursor: pointer;
 }
 
-/* ردیف وسط: چپ، OK، راست */
 .middle-row {
   display: flex;
-  gap: 5px;
+  gap: 8px;
 }
 
 .middle-row button {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
   background-color: #d3d3d3;
   border: 2px solid #777;
   display: flex;
@@ -78,6 +80,11 @@ body {
   font-weight: bold;
   box-shadow: 2px 2px 5px #000;
   cursor: pointer;
+}
+
+#ok {
+  background-color: #ffcc00;
+  font-weight: bold;
 }
 
 #controls button:active, .middle-row button:active {
@@ -85,16 +92,11 @@ body {
   box-shadow: inset 2px 2px 5px #000;
 }
 
-/* دکمه OK وسطی */
-#ok {
-  background-color: #ffcc00;
-  font-weight: bold;
-}
-
+/* واکنشگرایی موبایل */
 @media (max-width: 400px) {
   #controls #up, #controls #down, .middle-row button {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     font-size: 18px;
   }
 

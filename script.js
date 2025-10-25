@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
@@ -8,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const grid = 20;
   let snake, direction, nextDirection, food, speed, running, gameLoop;
+  let score = 0;
 
   function resizeCanvas() {
     const size = Math.min(window.innerWidth * 0.9, 400);
@@ -23,8 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
     direction = "RIGHT";
     nextDirection = "RIGHT";
     food = randomFood();
-    speed = 200;
+    speed = 400; // شروع خیلی آهسته
     running = false;
+    score = 0;
     clearInterval(gameLoop);
     draw();
   }
@@ -42,8 +45,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function draw() {
     const cell = canvas.width / grid;
-    ctx.fillStyle = "#001a00";
+    // پس‌زمینه سبز داخل قاب
+    ctx.fillStyle = "#0a3d0a";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // امتیاز و سرعت داخل کانواس
+    ctx.fillStyle = "#ffffff";
+    ctx.font = (canvas.width / 20) + "px Arial";
+    ctx.textAlign = "left";
+    ctx.fillText("امتیاز: " + score, 5, canvas.width / 20 + 5);
+    ctx.fillText("سرعت: " + ((400 - speed) / 20 + 1).toFixed(1), 5, canvas.width / 10 + 5);
 
     // غذا
     ctx.fillStyle = "#ff3333";
@@ -76,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
       bgMusic.pause();
       deadSound.currentTime = 0;
       deadSound.play();
-      vibrate(200); // لرزش مردن
+      vibrate(200);
       alert("💀 باختی!");
       initGame();
       return;
@@ -86,12 +97,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (head.x === food.x && head.y === food.y) {
       food = randomFood();
-      speed = Math.max(60, speed - 10);
+      score++;
+      speed = Math.max(80, speed - 15);
       clearInterval(gameLoop);
       gameLoop = setInterval(move, speed);
       eatSound.currentTime = 0;
       eatSound.play();
-      vibrate(100); // لرزش غذا خوردن
+      vibrate(100);
     } else {
       snake.pop();
     }
@@ -104,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("down").onclick = () => { if (direction !== "UP") nextDirection = "DOWN"; };
   document.getElementById("left").onclick = () => { if (direction !== "RIGHT") nextDirection = "LEFT"; };
   document.getElementById("right").onclick = () => { if (direction !== "LEFT") nextDirection = "RIGHT"; };
-  document.getElementById("ok").onclick = () => { /* میتونی مثلا Pause یا هیچ کاری */ };
+  document.getElementById("ok").onclick = () => { /* Pause یا کار دیگر */ };
 
   window.addEventListener("keydown", (e) => {
     if (e.key === "ArrowUp" && direction !== "DOWN") nextDirection = "UP";
@@ -113,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "ArrowRight" && direction !== "LEFT") nextDirection = "RIGHT";
   });
 
-  startBtn.onclick = () => {
+startBtn.onclick = () => {
     if (running) return;
     running = true;
     bgMusic.currentTime = 0;
