@@ -10,25 +10,26 @@
     <h1>🐍 Snake Game – Nokia Edition</h1>
     <canvas id="gameCanvas"></canvas>
 
-    <!-- دکمه شروع -->
-    <button id="start-btn">شروع بازی ▶️</button>
+    <!-- کنترل و دکمه شروع در یک بخش فشرده -->
+    <div id="bottom-panel">
+      <div id="nokia-controls">
+        <div class="control-row">
+          <button id="up">▲</button>
+        </div>
+        <div class="control-row">
+          <button id="left">◀</button>
+          <div class="center-circle"></div>
+          <button id="right">▶</button>
+        </div>
+        <div class="control-row">
+          <button id="down">▼</button>
+        </div>
+      </div>
 
-    <!-- کنترل نوکیا -->
-    <div id="nokia-controls">
-      <div class="control-row">
-        <button id="up">▲</button>
-      </div>
-      <div class="control-row">
-        <button id="left">◀</button>
-        <div class="center-circle"></div>
-        <button id="right">▶</button>
-      </div>
-      <div class="control-row">
-        <button id="down">▼</button>
-      </div>
+      <button id="start-btn">▶️</button>
     </div>
 
-    <!-- افکت‌های صوتی -->
+    <!-- صداها -->
     <audio
       id="eat-sound"
       src="https://actions.google.com/sounds/v1/cartoon/pop.ogg"

@@ -2,46 +2,59 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden; /* 🚫 حذف اسکرول */
+  overflow: hidden; /* 🚫 بدون اسکرول */
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   background-color: #0b1d0a;
   color: #9efc9e;
   font-family: 'Courier New', monospace;
 }
 
 h1 {
-  margin: 10px 0 5px;
-  font-size: clamp(18px, 4vw, 26px);
+  margin: 5px 0;
+  font-size: clamp(18px, 4vw, 24px);
   text-shadow: 0 0 8px #3aff3a;
   text-align: center;
 }
 
-/* canvas */
+/* صفحه بازی */
 canvas {
   background-color: #001a00;
   border: 2px solid #3aff3a;
-  width: 90vw;  /* تطبیق با عرض گوشی */
-  height: 90vw; /* مربع کامل متناسب با عرض */
-  max-width: 400px;
-  max-height: 400px;
-  margin: 5px 0;
-  box-shadow: 0 0 20px #3aff3a80;
+  width: 85vw;
+  height: 85vw;
+  max-width: 380px;
+  max-height: 380px;
+  box-shadow: 0 0 15px #3aff3a80;
+  margin-top: 5px;
+}
+
+/* بخش پایین */
+#bottom-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 5px;
 }
 
 /* دکمه شروع */
 #start-btn {
-  font-size: clamp(16px, 4vw, 20px);
-  padding: 10px 25px;
+  font-size: clamp(20px, 6vw, 26px);
+  padding: 10px 15px;
   background-color: #3aff3a20;
   color: #9efc9e;
   border: 2px solid #3aff3a;
-  border-radius: 10px;
-  font-family: 'Courier New', monospace;
+  border-radius: 50%;
+  width: clamp(60px, 15vw, 70px);
+  height: clamp(60px, 15vw, 70px);
   box-shadow: 0 0 10px #3aff3a80;
-  margin: 8px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 #start-btn:active {
   background-color: #3aff3a40;
@@ -52,8 +65,7 @@ canvas {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10px;
-  user-select: none;
+  transform: scale(0.9);
 }
 
 .control-row {
@@ -63,10 +75,10 @@ canvas {
 }
 
 #nokia-controls button {
-  width: clamp(50px, 14vw, 65px);
-  height: clamp(50px, 14vw, 65px);
-  margin: 4px;
-  font-size: clamp(20px, 5vw, 28px);
+  width: clamp(45px, 13vw, 60px);
+  height: clamp(45px, 13vw, 60px);
+  margin: 3px;
+  font-size: clamp(18px, 5vw, 26px);
   font-weight: bold;
   color: #9efc9e;
   background: radial-gradient(circle at 30% 30%, #0f3, #040);
@@ -82,11 +94,11 @@ canvas {
 }
 
 .center-circle {
-  width: clamp(40px, 12vw, 55px);
-  height: clamp(40px, 12vw, 55px);
+  width: clamp(35px, 10vw, 50px);
+  height: clamp(35px, 10vw, 50px);
   border: 2px solid #3aff3a;
   border-radius: 50%;
-  margin: 4px;
+  margin: 3px;
   background: radial-gradient(circle, #002200, #000);
   box-shadow: inset 0 0 8px #3aff3a;
 }
